@@ -1,28 +1,50 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-app-bar app dark color="#1b5e20">
+      <v-toolbar-title class="headline text-uppercase">
+        <span id="title">Oncologist.iobio</span>
+      </v-toolbar-title>
+      <v-toolbar-title style="padding-bottom:15px">
+        <span id="beta-title">beta</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn
+        text
+        href="http://iobio.io"
+        target="_blank"
+      >
+        <span class="mr-2">an iobio project</span>
+      </v-btn>
+    </v-app-bar>
+
+    <v-content>
+      <Home/>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Home from './components/Home';
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    Home,
+  },
+  data: () => ({
+    //
+  }),
+};
 </script>
+<style scoped lang="sass">
+  #title
+    font-family: Quicksand
+    font-weight: 500
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #beta-title
+    font-style: italic
+    font-size: 16px
+    margin-right: 5px
+    margin-left: 0px
+    color: yellow
 </style>
