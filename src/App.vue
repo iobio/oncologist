@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app dark color="#1b5e20">
+    <v-app-bar app dark color=primary>
       <v-toolbar-title class="headline text-uppercase">
         <span id="title">Oncologist.iobio</span>
       </v-toolbar-title>

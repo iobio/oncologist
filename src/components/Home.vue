@@ -1,11 +1,16 @@
 <template>
-    <div></div>
+    <div>
+        <PatientHistory/>
+    </div>
 </template>
 
 <script>
+    import PatientHistory from './PatientHistory.vue'
+
     export default {
         name: "Home.vue",
         components: {
+            PatientHistory
         }
     }
 </script>
