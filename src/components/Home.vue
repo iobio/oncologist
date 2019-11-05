@@ -1,17 +1,47 @@
 <template>
     <div>
-        <v-layout>
-            <v-flex xs7>
-                <PatientMetaData/>
-                <DrugScores
-                        :fileName="FILENAME"
-                        :drugList="DRUGS">
-                </DrugScores>
-            </v-flex>
-            <v-flex xs5>
-                <PatientTimeline/>
-            </v-flex>
-        </v-layout>
+        <v-sheet
+                :height="screenHeight"
+                class="overflow-hidden"
+                style="position: relative;"
+        >
+            <!--Static main page-->
+            <v-layout>
+                <v-flex xs7>
+                    <PatientMetaData/>
+                    <DrugScores
+                            :fileName="FILENAME"
+                            :drugList="DRUGS">
+                    </DrugScores>
+                </v-flex>
+                <v-flex xs5>
+                    <PatientTimeline/>
+                </v-flex>
+            </v-layout>
+
+            <!--Dynamic drawer-->
+            <v-navigation-drawer
+                    v-model="displayEvidenceDrawer"
+                    absolute
+                    temporary
+            >
+                <v-list-item>
+                    <v-list-item-avatar>
+                        <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+                    </v-list-item-avatar>
+
+                    <v-list-item-content>
+                        <v-list-item-title>John Leider</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
+                <v-divider></v-divider>
+
+                <v-list dense>
+
+                </v-list>
+            </v-navigation-drawer>
+        </v-sheet>
     </div>
 </template>
 
@@ -29,9 +59,31 @@
         },
         data: () => {
             return {
-              FILENAME:  'http://localhost:8000/tsvExample.tsv',
-              DRUGS: ['Everolimus', 'Bevacizumab', 'Trastuzumab', 'Palbociclib', 'Ribociclib', 'Olaparib', 'Neratinib', 'Pertuzumab']
+                FILENAME: 'http://localhost:8000/tow19example.tsv',
+                DRUGS: ['Everolimus', 'Bevacizumab', 'Trastuzumab', 'Palbociclib', 'Ribociclib', 'Olaparib', 'Neratinib', 'Pertuzumab'],
+                displayEvidenceDrawer: true,
+                screenWidth: window.innerWidth,
+                screenHeight: window.innerHeight,
+                displayDrawerWidth: 0
             };
+        },
+        watch: {
+            displayEvidenceDrawer: function () {
+                if (this.displayEvidenceDrawer) {
+                    this.displayDrawerWidth = window.innerWidth * 0.75;
+                } else {
+                    this.displayDrawerWidth = 0;
+                }
+            }
+        },
+        computed: {
+            // displayDrawerWidth: function() {
+            //     if (this.displayEvidenceDrawer) {
+            //         return this.screenWidth * 0.75;
+            //     } else {
+            //         return 0;
+            //     }
+            // }
         }
     }
 </script>

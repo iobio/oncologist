@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app dark color=primary>
+    <v-app-bar app dark color=darkPrimary>
       <v-toolbar-title class="headline text-uppercase">
         <span id="title">Oncologist.iobio</span>
       </v-toolbar-title>
@@ -8,6 +8,7 @@
         <span id="beta-title">beta</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <span style="color: red; font-style: italic; font-weight: 600; text-align: center">NOT A DIAGNOSTIC TOOL</span>
       <v-btn
         text
         href="http://iobio.io"

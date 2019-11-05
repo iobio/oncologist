@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card class="my-1 ml-1">
         <v-card-title style="font-family: Raleway; color: #888888">
             DRUG SCORES
         </v-card-title>
@@ -49,8 +49,8 @@
 
     text.mono {
         font-size: 9pt;
-        font-family: Consolas, courier;
-        fill: #aaa;
+        font-family: Raleway;
+        fill: #888;
     }
 
     text.axis-drugs {

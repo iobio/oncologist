@@ -8,7 +8,7 @@
                 <v-timeline-item
                         v-for="item in timelineItems"
                         :key="item.title"
-                        color="primary"
+                        color="primaryDark"
                         small
                 >
                     <template v-slot:opposite>
@@ -60,7 +60,7 @@
         text-align: right
         padding-right: 10px
     .timeline-card-title
-        color: #1b5e20
+        color: #194d81
         margin: -16px -16px 10px -16px
         background-color: #e9eaec
         height: 35px
@@ -70,5 +70,5 @@
         font-weight: 500
         font-size: 22px
         font-family: Quicksand
-        color: #1b5e20
+        color: #194d81
 </style>
