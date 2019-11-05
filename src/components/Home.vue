@@ -3,7 +3,10 @@
         <v-layout>
             <v-flex xs7>
                 <PatientMetaData/>
-                <DrugScores/>
+                <DrugScores
+                        :fileName="FILENAME"
+                        :drugList="DRUGS">
+                </DrugScores>
             </v-flex>
             <v-flex xs5>
                 <PatientTimeline/>
@@ -23,6 +26,12 @@
             PatientMetaData,
             PatientTimeline,
             DrugScores
+        },
+        data: () => {
+            return {
+              FILENAME:  'http://localhost:8000/tsvExample.tsv',
+              DRUGS: ['Everolimus', 'Bevacizumab', 'Trastuzumab', 'Palbociclib', 'Ribociclib', 'Olaparib', 'Neratinib', 'Pertuzumab']
+            };
         }
     }
 </script>
