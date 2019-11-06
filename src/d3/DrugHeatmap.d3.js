@@ -93,7 +93,7 @@ export default function drugHeatmap(vizId, drugs, scoreDataFileName) {
                         return colorScale(d.value);
                     })
                     .on("click", function(d) {
-                        dispatch.call("drugClick", d.drug);
+                        dispatch.call("drugClick", this, d.drug );
                     });
 
                 cards.select("title").text(function (d) {

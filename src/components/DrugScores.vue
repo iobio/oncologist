@@ -34,9 +34,7 @@
                 const self = this;
 
                 self.heatmap = new drugHeatmap(self.divId, self.drugList, self.fileName)
-                    // .on('drugClick', function(drug) { self.$emit('drugClick', drug); })
-                    .on('drugClick', function() { console.log('message rcvd'); });
-
+                    .on('drugClick', function(drug) { console.log(drug); self.$emit('drugClick', drug); })
             }
         },
         mounted: function() {

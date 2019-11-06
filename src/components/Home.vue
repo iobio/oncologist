@@ -11,7 +11,8 @@
                     <PatientMetaData/>
                     <DrugScores
                             :fileName="FILENAME"
-                            :drugList="DRUGS">
+                            :drugList="DRUGS"
+                            @drugClick="onDrugClick">
                     </DrugScores>
                 </v-flex>
                 <v-flex xs5>
@@ -76,15 +77,13 @@
                 }
             }
         },
-        computed: {
-            // displayDrawerWidth: function() {
-            //     if (this.displayEvidenceDrawer) {
-            //         return this.screenWidth * 0.75;
-            //     } else {
-            //         return 0;
-            //     }
-            // }
-        }
+        methods: {
+          onDrugClick: function(drug) {
+              console.log('message rcvd' + drug);
+              // TODO: what to do with this
+          }
+        },
+        computed: {}
     }
 </script>
 
