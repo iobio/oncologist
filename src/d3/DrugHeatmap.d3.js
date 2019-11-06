@@ -1,3 +1,4 @@
+/* SJG Nov2019 adapted from http://bl.ocks.org/tjdecke/5558084 */
 import * as d3 from 'd3'
 
 export default function drugHeatmap(vizId, drugs, scoreDataFileName) {
@@ -11,6 +12,8 @@ export default function drugHeatmap(vizId, drugs, scoreDataFileName) {
         evidenceTypes = ["Drug Screen", "Genomic Evidence", "Expression Evidence"],
         // colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"];
         colors = ['#b2182b','#ef8a62','#fddbc7','#f7f7f7','#d1e5f0','#67a9cf','#2166ac'];
+
+    var dispatch = d3.dispatch("drugClick", "sort");
 
     var svg = d3.select("#" + vizId).append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -88,8 +91,10 @@ export default function drugHeatmap(vizId, drugs, scoreDataFileName) {
                     .attr("height", gridSize - gridSpacing)
                     .style("fill", function (d) {
                         return colorScale(d.value);
+                    })
+                    .on("click", function(d) {
+                        dispatch.call("drugClick", d.drug);
                     });
-
 
                 cards.select("title").text(function (d) {
                     return d.value;
@@ -128,6 +133,15 @@ export default function drugHeatmap(vizId, drugs, scoreDataFileName) {
 
                 legend.exit().remove();
             });
+
+        return svg.node();
     };
     heatmapChart(scoreDataFileName);
+
+    // New rebind paradigm
+    heatmapChart.on = function() {
+        var value = dispatch.on.apply(dispatch, arguments);
+        return value === dispatch ? heatmapChart : value;
+    };
+    return heatmapChart;
 }

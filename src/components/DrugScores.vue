@@ -32,7 +32,11 @@
         methods: {
             drawHeatmap: function() {
                 const self = this;
-                self.heatmap = new drugHeatmap(self.divId, self.drugList, self.fileName);
+
+                self.heatmap = new drugHeatmap(self.divId, self.drugList, self.fileName)
+                    // .on('drugClick', function(drug) { self.$emit('drugClick', drug); })
+                    .on('drugClick', function() { console.log('message rcvd'); });
+
             }
         },
         mounted: function() {
