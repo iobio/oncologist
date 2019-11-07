@@ -9,8 +9,7 @@ export default function drugHeatmap(vizId, drugs, scoreDataFileName) {
         gridSpacing = 5,
         legendElementWidth = gridSize * 2,
         buckets = 7,
-        evidenceTypes = ["Drug Screen", "Genomic Evidence", "Expression Evidence"],
-        // colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"];
+        evidenceTypes = ["Drug Screen Evidence", "Genomic Evidence", "Expression Evidence"],
         colors = ['#b2182b','#ef8a62','#fddbc7','#f7f7f7','#d1e5f0','#67a9cf','#2166ac'];
 
     var dispatch = d3.dispatch("drugClick", "sort");
@@ -93,7 +92,7 @@ export default function drugHeatmap(vizId, drugs, scoreDataFileName) {
                         return colorScale(d.value);
                     })
                     .on("click", function(d) {
-                        dispatch.call("drugClick", this, d.drug );
+                        dispatch.call("drugClick", this, drugs[d.drug - 1] );
                     });
 
                 cards.select("title").text(function (d) {
