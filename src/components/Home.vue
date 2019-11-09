@@ -28,10 +28,11 @@
                     right
                     :width="overlayWidth"
             >
-                <EvidencePanel
+                <EvidenceDrawer
                     :drug="selectedDrug"
-                    :cardWidth="overlayWidth">
-                </EvidencePanel>
+                    :screenWidth="screenWidth"
+                    :screenHeight="screenHeight">
+                </EvidenceDrawer>
             </v-navigation-drawer>
         </v-sheet>
     </div>
@@ -41,7 +42,7 @@
     import PatientMetaData from './PatientMetaData.vue'
     import PatientTimeline from './PatientTimeline.vue'
     import DrugScores from './DrugScores.vue'
-    import EvidencePanel from './EvidencePanel.vue'
+    import EvidenceDrawer from './EvidenceDrawer.vue'
 
     export default {
         name: "Home.vue",
@@ -49,7 +50,7 @@
             PatientMetaData,
             PatientTimeline,
             DrugScores,
-            EvidencePanel
+            EvidenceDrawer
         },
         data: () => {
             return {

@@ -4,12 +4,13 @@
             Genomic Vulnerabilities
         </v-card-title>
         <v-card-text>
-            <v-row justify="left">
+            <v-row>
                 <v-col
-                    v-for="v in vulnerabilites"
-                    :key="v.gene"
-                    cols="auto"
-                    class="target-col"
+                        v-for="v in variants"
+                        :key="v.gene"
+                        cols="auto"
+                        class="target-col"
+                        v-on:click="$emit('show-gene-details', v)"
                 >
                     <v-row>
                         <i class="material-icons" style="font-size: 96px; color: #b2182b">gps_fixed</i>
@@ -31,20 +32,31 @@
 <script>
     export default {
         name: "GenEvidence",
-        components: {
+        components: {},
+        props: {
+            screenWidth: {
+                type: Number,
+                default: 500
+            },
+            screenHeight: {
+                type: Number,
+                default: 500
+            }
         },
-        props: {},
         data: () => {
             return {
-                vulnerabilites: [
-                    { gene: 'VHL', type: '3\'SNP', typeColor: '#daa520', isSubclonal: false },
-                    { gene: 'MITD1', type: 'FS', typeColor: 'red', isSubclonal: true }
+                variants: [
+                    { gene: 'VHL', type: '3\'SNP', chrom: '3', start: 10150429, end: 10150430,
+                        ref: 'C', alt: 'G', typeColor: '#daa520', isSubclonal: false },
+                    { gene: 'MITD1', type: 'FS', chrom: '2', start: 99174427, end: 99174429,
+                        ref: 'ATG', alt: 'AG', typeColor: 'red', isSubclonal: true }
                 ]
             }
-        }
+        },
+        computed: {},
+        methods: {}
     }
 </script>
-8/41085200
 <style scoped lang="sass">
     .card-title
         font-family: Raleway
