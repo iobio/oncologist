@@ -32,9 +32,10 @@ export default {
   components: {
     Home,
   },
-  data: () => ({
-    //
-  }),
+  data: () => {
+    return {
+    }
+  },
 };
 </script>
 <style scoped lang="sass">

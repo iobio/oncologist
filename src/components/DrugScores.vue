@@ -10,6 +10,7 @@
 </template>
 
 <script>
+    import d3 from '@/assets/d3';
     import drugHeatmap from '../d3/DrugHeatmap.d3.js'
     export default {
         name: "DrugScores.vue",
@@ -32,7 +33,7 @@
         methods: {
             drawHeatmap: function() {
                 const self = this;
-                self.heatmap = new drugHeatmap(self.divId, self.drugList, self.fileName)
+                self.heatmap = new drugHeatmap(d3, self.divId, self.drugList, self.fileName)
                     .on('drugClick', function(drug) { self.$emit('drugClick', drug); })
             }
         },

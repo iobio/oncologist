@@ -12,6 +12,8 @@
     "d3": "^5.12.0",
     "d3-scale": "^3.2.0",
     "d3-selection": "^1.4.0",
+    "d3-axis": "^",
+    "d3-ease": "^",
     "material-design-icons-iconfont": "^5.0.1",
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
@@ -42,7 +44,8 @@
       "eslint:recommended"
     ],
     "rules": {
-      "no-console": "off"
+      "no-console": "off",
+      "no-debugger": "off"
     },
     "parserOptions": {
       "parser": "babel-eslint"

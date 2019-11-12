@@ -1,7 +1,6 @@
 /* SJG Nov2019 adapted from http://bl.ocks.org/tjdecke/5558084 */
-import * as d3 from 'd3';
 
-export default function drugHeatmap(vizId, drugs, scoreDataFileName) {
+export default function drugHeatmap(d3, vizId, drugs, scoreDataFileName) {
     var margin = {top: 50, right: 150, bottom: 100, left: 150},
         width = 800 - margin.left - margin.right + 300, // hardcoded adding margin back in to scale correctly
         height = 450 - margin.top - margin.bottom,

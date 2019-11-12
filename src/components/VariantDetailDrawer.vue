@@ -50,13 +50,10 @@
                                         style="font-size: 14px; padding-left: 2px;">open_in_new</i></a>
                             </v-col>
                         </v-row>
-                        <v-row>
-                            <div :id="vizId"></div>
-                        </v-row>
                     </v-container>
                 </v-card-title>
                 <v-card-text>
-
+                    <div :id="vizId"></div>
                 </v-card-text>
             </v-card>
             <v-card class="detail-card">
@@ -67,6 +64,7 @@
 </template>
 
 <script>
+    import d3 from '@/assets/d3';
     import variantViz from '../d3/Variant.d3.js'
 
     export default {
@@ -87,7 +85,8 @@
                 variantTrack: null,
                 vizId: 'variant-viz',
                 variantData: [
-                    {   features: [
+                    {
+                        features: [
                             {
                                 start: 0,
                                 end: 0,
@@ -100,57 +99,58 @@
                 ]
             }
         },
-            computed: {
-                geneSummary: function () {
-                    // TODO: actually do backend service call here
-                    if (this.variant == null) {
-                        return '';
-                    }
+        computed: {
+            geneSummary: function () {
+                // TODO: actually do backend service call here
+                if (this.variant == null) {
+                    return '';
+                }
 
-                    if (this.variant.gene === 'VHL') {
-                        return {
-                            title: 'VHL: Von Hippel-Lindau Tumor Suppressor',
-                            body: 'VHL (Von Hippel-Lindau Tumor Suppressor) is a Protein Coding gene. ' +
-                            'Diseases associated with VHL include Von Hippel-Lindau Syndrome and Erythrocytosis,' +
-                            ' Familial, 2. Among its related pathways are Cellular Senescence (REACTOME) and Amplification' +
-                            ' and Expansion of Oncogenic Pathways as Metastatic Traits. Gene Ontology (GO) annotations' +
-                            ' related to this gene include enzyme binding and ubiquitin-protein transferase activity. ' +
-                            'An important paralog of this gene is VHLL.'
-                        };
-                    } else if (this.variant.gene === 'MITD1') {
-                        return {
-                            title: 'MITD1: Microtubule Interacting And Trafficking Domain Containing 1',
-                            body: 'MITD1 (Microtubule Interacting And Trafficking Domain Containing 1) ' +
-                            'is a Protein Coding gene. Diseases associated with MITD1 include Lipoyltransferase ' +
-                            '1 Deficiency. Gene Ontology (GO) annotations related to this gene include ' +
-                            'protein homodimerization activity and phosphatidylinositol binding.'
-                        };
-                    } else {
-                        return 'Could not retrieve gene summary.';
-                    }
+                if (this.variant.gene === 'VHL') {
+                    return {
+                        title: 'VHL: Von Hippel-Lindau Tumor Suppressor',
+                        body: 'VHL (Von Hippel-Lindau Tumor Suppressor) is a Protein Coding gene. ' +
+                        'Diseases associated with VHL include Von Hippel-Lindau Syndrome and Erythrocytosis,' +
+                        ' Familial, 2. Among its related pathways are Cellular Senescence (REACTOME) and Amplification' +
+                        ' and Expansion of Oncogenic Pathways as Metastatic Traits. Gene Ontology (GO) annotations' +
+                        ' related to this gene include enzyme binding and ubiquitin-protein transferase activity. ' +
+                        'An important paralog of this gene is VHLL.'
+                    };
+                } else if (this.variant.gene === 'MITD1') {
+                    return {
+                        title: 'MITD1: Microtubule Interacting And Trafficking Domain Containing 1',
+                        body: 'MITD1 (Microtubule Interacting And Trafficking Domain Containing 1) ' +
+                        'is a Protein Coding gene. Diseases associated with MITD1 include Lipoyltransferase ' +
+                        '1 Deficiency. Gene Ontology (GO) annotations related to this gene include ' +
+                        'protein homodimerization activity and phosphatidylinositol binding.'
+                    };
+                } else {
+                    return 'Could not retrieve gene summary.';
                 }
-            ,
-                variantLocation()
-                {
-                    if (this.variant == null) {
-                        return '';
-                    } else {
-                        return 'chr' + this.variant.chrom + ':' + this.variant.start + '-' + this.variant.end
-                            + ' ' + this.variant.ref + '->' + this.variant.alt;
-                    }
+            },
+            variantLocation() {
+                if (this.variant == null) {
+                    return '';
+                } else {
+                    return 'chr' + this.variant.chrom + ':' + this.variant.start + '-' + this.variant.end
+                        + ' ' + this.variant.ref + '->' + this.variant.alt;
                 }
             }
-        ,
-            methods: {
-                drawVariantViz: function () {
-                    this.variantTrack = new variantViz(this.vizId, this.variantData);
-                }
+        },
+        methods: {
+            drawVariantViz: function (vizId) {
+                let selection = d3.select('#' + this.vizId).datum([this.variant]);
+                this.variantTrack = new variantViz(d3, vizId, selection);
             }
-        ,
-            mounted: function () {
-                this.drawVariantViz();
+        },
+        watch: {
+            variant: function () {
+                if (this.variant != null) {
+                    this.drawVariantViz(this.vizId, this.variant);
+                }
             }
         }
+    }
 </script>
 
 <style scoped lang="sass">
@@ -179,4 +179,5 @@
             font-size: 16px
             padding-left: 16px
             padding-right: 16px
+
 </style>

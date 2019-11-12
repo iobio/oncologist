@@ -46,10 +46,12 @@
         data: () => {
             return {
                 variants: [
-                    { gene: 'VHL', type: '3\'SNP', chrom: '3', start: 10150429, end: 10150430,
-                        ref: 'C', alt: 'G', typeColor: '#daa520', isSubclonal: false },
+                    { gene: 'VHL', type: '3\'SNP', chrom: '3', start: 10141008, end: 10153670,
+                        ref: 'C', alt: 'G', typeColor: '#daa520', isSubclonal: false,
+                        features: [ {start: 10150429, end: 10150430, level: 1, type: 'SNP', impact: 'MODERATE' } ] },
                     { gene: 'MITD1', type: 'FS', chrom: '2', start: 99174427, end: 99174429,
-                        ref: 'ATG', alt: 'AG', typeColor: 'red', isSubclonal: true }
+                        ref: 'ATG', alt: 'AG', typeColor: 'red', isSubclonal: true,
+                        features: [ {start: 0, end: 0, level: 1} ] }
                 ]
             }
         },

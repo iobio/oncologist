@@ -1,12 +1,9 @@
-import * as d3 from 'd3';
-
-export default function variantD3(vizId, data) {
-    // var dispatch = d3.dispatch("d3brush", "d3rendered", "d3outsideclick", "d3click", "d3mouseover", "d3mouseout", "d3glyphmouseover", "d3glyphmouseout");
+export default function variantD3(d3, vizId, theSelection) {
 
     // dimensions
     var margin = {top: 30, right: 0, bottom: 20, left: 110},
         width = 800,
-        height = 100;
+        height = 200;
     // scales
     var x = d3.scaleLinear(),
         y = d3.scaleLinear();
@@ -16,9 +13,9 @@ export default function variantD3(vizId, data) {
     // variables
     var borderRadius = 1,
         variantHeight = 10,
-        regionStart = undefined,
-        regionEnd = undefined,
-        showXAxis = false,
+        regionStart = null,
+        regionEnd = null,
+        showXAxis = true,
         xTickFormat = null,
         heightPercent = "100%",
         widthPercent = "100%",
@@ -28,9 +25,14 @@ export default function variantD3(vizId, data) {
         verticalPadding = 4,
         showTransition = true,
         lowestWidth = 3,
-        dividerLevel = null,
-        container = null;
-        // clazz = null;
+        dividerLevel = false,
+        container = null,
+        selection = theSelection;
+
+    // var svg = d3.select("#" + vizId).append("svg")
+    //     .attr("width", width + margin.left + margin.right)
+    //     .attr("height", height + margin.top + margin.bottom)
+    //     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     //  options
 
@@ -282,8 +284,7 @@ export default function variantD3(vizId, data) {
 
     function chart() {
         // merge options and defaults
-        // var options = $.extend(defaults, optionParams);
-        // console.log(options);
+        // options = $.extend(defaults, options);
 
         if (verticalLayers == null) {
             verticalLayers = 1;
@@ -307,19 +308,16 @@ export default function variantD3(vizId, data) {
         // determine inner height (w/o margins)
         var innerHeight = height - margin.top - margin.bottom;
 
-        var selection = d3.select('#' + vizId).datum([data])
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        selection.each(function (data) {
+        selection.each(function(data) {
             // set svg element
-            container = d3.select(this).classed('ibo-variant', true);
+            container = d3.select(this);
             container.selectAll("svg").remove();
 
             if (data && data.length > 0 && data[0] && data[0].features && data[0].features.length > 0) {
 
                 // Update the x-scale.
+                regionStart = data[0].start;
+                regionEnd = data[0].end;
                 if (regionStart && regionEnd) {
                     x.domain([regionStart, regionEnd]);
                 } else {
@@ -412,23 +410,17 @@ export default function variantD3(vizId, data) {
 
                 // Brush
                 // var brush = d3.svg.brush()
-                //     .x(x);
-                    // .on("brushend", function () {
-                    //     dispatch.d3brush(brush);
-                    // });
+                //     .x(x)
+                //     .on("brushend", function () {
+                //         dispatch.d3brush(brush);
+                //     });
 
 
                 // Select the svg element, if it exists.
-                var svg = d3.select("#" + vizId).append("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                var svg = container.selectAll("svg").data([0]);
 
-                svg = container.selectAll("svg").data([0]);
 
-                svg.enter()
-                    .append("svg")
+                var g = svg.join("svg")
                     .attr("width", widthPercent)
                     .attr("height", heightPercent)
                     .attr('viewBox', "0 0 " + parseInt(width + margin.left + margin.right) + " " + parseInt(height + margin.top + margin.bottom))
@@ -437,26 +429,26 @@ export default function variantD3(vizId, data) {
                     .attr("class", "group")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                // svg.on("click", function () {
+                // svg.on("click", function (d) {
                 //     dispatch.d3outsideclick(null);
-                // });
+                // })
 
-                var g = svg.select("g.group");
+                // var g = svg.select("g.group");
 
 
                 // The chart dimensions could change after instantiation, so update viewbox dimensions
                 // every time we draw the chart.
-                d3.select(this).selectAll("svg")
-                    .filter(function () {
-                        return this.parentNode === container.node();
-                    })
-                    .attr('viewBox', "0 0 " + parseInt(width + margin.left + margin.right) + " " + parseInt(height + margin.top + margin.bottom));
-
-
-                // Add grouping for flagged variants
-                svg.select("g.flagged-variants").remove();
-                svg.append("g")
-                    .attr("class", "flagged-variants");
+                // d3.select(this).selectAll("svg")
+                //     .filter(function () {
+                //         return this.parentNode === container.node();
+                //     })
+                //     .attr('viewBox', "0 0 " + parseInt(width + margin.left + margin.right) + " " + parseInt(height + margin.top + margin.bottom));
+                //
+                //
+                // // Add grouping for flagged variants
+                // svg.select("g.flagged-variants").remove();
+                // svg.append("g")
+                //     .attr("class", "flagged-variants");
 
 
                 // Create the X-axis.
@@ -481,33 +473,37 @@ export default function variantD3(vizId, data) {
                     divider.append("text").attr("x", width / 2)
                         .attr("y", -10)
                         .text("Homozygous");
+
                 }
 
 
                 // add tooltip div
-                container.selectAll(".tooltip").data([0])
-                    .enter().append('div')
-                    .attr("class", "tooltip")
-                    .style("opacity", 0);
+                // container.selectAll(".tooltip")
+                //     .data([0])
+                //     .enter().append('div')
+                //     .attr("class", "tooltip")
+                //     .style("opacity", 0);
 
 
                 // Start variant model
                 // add elements
-                var track = g.selectAll('.track.snp').data(data);
-                track.enter().append('g')
+                var track = g.selectAll('.track.snp')
+                    .data(data)
+                    .join('g')
                     .attr('class', 'track snp')
                     .attr('transform', function (d, i) {
                         return "translate(0," + y(i + 1) + ")"
                     });
 
-                var trackindel = g.selectAll('.track.indel').data(data);
-                trackindel.enter().append('g')
+                var trackindel = g.selectAll('.track.indel')
+                    .data(data)
+                    .join('g')
                     .attr('class', 'track indel')
                     .attr('transform', function (d, i) {
                         return "translate(0," + y(i + 1) + ")"
                     });
 
-                // var brushY;
+
                 // if (showBrush) {
                 //     if (brushHeight == null) {
                 //         brushHeight = variantHeight;
@@ -529,16 +525,17 @@ export default function variantD3(vizId, data) {
 
 
                 // snps
-                track.selectAll('.variant').data(function (d) {
-                    return d['features'].filter(function (d) {
-                        return d.type.toUpperCase() == 'SNP' || d.type.toUpperCase() == 'MNP';
+                track.selectAll('.variant')
+                    .data(function (d) {
+                        return d['features'].filter(function (d) {
+                            return d.type.toUpperCase() === 'SNP' || d.type.toUpperCase() === 'MNP';
                     });
-                }).enter().append('rect')
+                }).join('rect')
                     .attr('class', function (d) {
-                        return chart.clazz()(d);
+                        return classifyByImpact(d);
                     })
-                    .attr('id', function (d) {
-                        return d.id;
+                    .style('fill', function(d) {
+                        return getImpactColor(d);
                     })
                     .attr('rx', borderRadius)
                     .attr('ry', borderRadius)
@@ -546,6 +543,7 @@ export default function variantD3(vizId, data) {
                         return Math.round(x(d.start) - (minWidth / 2) + (minWidth / 4));
                     })
                     .attr('width', function () {
+                        //            return showTransition ? 0 : Math.max(Math.round(x(d.end) - x(d.start)), minWidth);
                         return showTransition ? 0 : variantHeight;
                     })
                     .attr('y', function (d) {
@@ -562,7 +560,7 @@ export default function variantD3(vizId, data) {
                             || d.type.toUpperCase() == 'COMPLEX';
                     });
                     return indels;
-                }).enter().append('path')
+                }).join('path')
                     .attr("d", function (d, i) {
                         return d3.svg
                             .symbol()
@@ -570,10 +568,10 @@ export default function variantD3(vizId, data) {
                             .size(symbolSize)();
                     })
                     .attr('class', function (d) {
-                        return chart.clazz()(d);
+                        return classifyByImpact(d);
                     })
-                    .attr('id', function (d) {
-                        return d.id;
+                    .style('fill', function(d) {
+                        return getImpactColor(d);
                     })
                     .attr("transform", function (d) {
                         var xCoord = x(d.start) + 2;
@@ -592,7 +590,7 @@ export default function variantD3(vizId, data) {
                 //     .on("mouseover", function (d) {
                 //         dispatch.d3mouseover(d);
                 //     })
-                //     .on("mouseout", function () {
+                //     .on("mouseout", function (d) {
                 //         dispatch.d3mouseout();
                 //     });
 
@@ -620,9 +618,9 @@ export default function variantD3(vizId, data) {
                         .delay(function (d, i) {
                             return i * interval;
                         })
-                        .ease("bounce")
+                        .ease(d3.easeBounce)
                         .attr('x', function (d) {
-                            return d3.format("d")(x(d.start) - (minWidth / 2) + (minWidth / 4));
+                            return d3.format('d')(x(d.start) - (minWidth / 2) + (minWidth / 4));
                         })
                         .attr('width', function () {
                             // TODO:  Need to review!!
@@ -642,7 +640,7 @@ export default function variantD3(vizId, data) {
                         .delay(function (d, i) {
                             return i * interval;
                         })
-                        .ease("bounce")
+                        .ease(d3.easeBounce)
                         .attr("d", function (d, i) {
                             return d3.svg
                                 .symbol()
@@ -662,7 +660,7 @@ export default function variantD3(vizId, data) {
                         .delay(function (d, i) {
                             return i * interval;
                         })
-                        .ease("bounce")
+                        .ease(d3.easeBounce)
                         .attr("d", function (d, i) {
                             return d3.svg
                                 .symbol()
@@ -713,7 +711,7 @@ export default function variantD3(vizId, data) {
                     var circleClazz = '.' + clazz + '.circle';
                     if (svg.selectAll(circleClazz).empty()) {
                         svg.selectAll(circleClazz).data([0])
-                            .enter().append('circle')
+                            .join('circle')
                             .attr("class", clazz + " circle")
                             .attr("cx", 0)
                             .attr("cy", 0)
@@ -725,7 +723,7 @@ export default function variantD3(vizId, data) {
                     if (svg.selectAll(arrowClazz).empty()) {
                         //svg.selectAll("g.arrow").remove();
                         var garrow = svg.selectAll(arrowClazz).data([0])
-                            .enter().append("g")
+                            .join("g")
                             .attr("class", clazz + " arrow")
                             .attr("transform", "translate(1,0)");
 
@@ -749,6 +747,8 @@ export default function variantD3(vizId, data) {
             }
         });
     }
+
+    chart();
 
     // chart.showFlaggedVariant = function (svg, variant, key) {
     //
@@ -826,6 +826,26 @@ export default function variantD3(vizId, data) {
             d = d / 1000 + "K";
         return d;
     }
+
+    function classifyByImpact(d) {
+        return 'variant' + ' ' + d.type.toLowerCase();
+    }
+
+    function getImpactColor(d) {
+        switch (d.impact.toUpperCase()) {
+            case 'HIGH':
+                return '#E0292B';
+            case 'MODERATE':
+                return '#F49A73';
+            case 'MODIFIER':
+                return '#f9e4b5';
+            case 'LOW':
+                return 'rgba(181, 207, 107, 0.65)';
+            default:
+                return '#888';
+        }
+    }
+
     // chart.margin = function (_) {
     //     if (!arguments.length) return margin;
     //     margin = _;
