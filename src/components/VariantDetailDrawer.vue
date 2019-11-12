@@ -132,7 +132,7 @@
                 if (this.variant == null) {
                     return '';
                 } else {
-                    return 'chr' + this.variant.chrom + ':' + this.variant.start + '-' + this.variant.end
+                    return 'chr' + this.variant.chrom + ':' + this.variant.features[0].start + '-' + this.variant.features[0].end
                         + ' ' + this.variant.ref + '->' + this.variant.alt;
                 }
             }

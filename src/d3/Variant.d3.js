@@ -1,8 +1,8 @@
 export default function variantD3(d3, vizId, theSelection) {
 
     // dimensions
-    var margin = {top: 30, right: 0, bottom: 20, left: 110},
-        width = 800,
+    var margin = {top: 10, right: 0, bottom: 10, left: 110},
+        width = 1000,
         height = 200;
     // scales
     var x = d3.scaleLinear(),
@@ -12,35 +12,20 @@ export default function variantD3(d3, vizId, theSelection) {
         .tickFormat(tickFormatter);
     // variables
     var borderRadius = 1,
-        variantHeight = 10,
+        variantHeight = 12,
         regionStart = null,
         regionEnd = null,
         showXAxis = true,
         xTickFormat = null,
         heightPercent = "100%",
         widthPercent = "100%",
-        // showBrush = false,
-        // brushHeight = null,
         verticalLayers = 1,
-        verticalPadding = 4,
+        verticalPadding = 6,
         showTransition = true,
         lowestWidth = 3,
         dividerLevel = false,
         container = null,
         selection = theSelection;
-
-    // var svg = d3.select("#" + vizId).append("svg")
-    //     .attr("width", width + margin.left + margin.right)
-    //     .attr("height", height + margin.top + margin.bottom)
-    //     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    //  options
-
-    // var tooltipHTML = function (variant) {
-    //     return (variant.type + ': '
-    //         + variant.start
-    //         + (variant.end > variant.start + 1 ? ' - ' + variant.end : ""));
-    // };
 
 
     function getSymbol(d) {
@@ -52,235 +37,6 @@ export default function variantD3(d3, vizId, theSelection) {
             return 'diamond';
         }
     }
-
-    /* Returns the value of the variant.
-     * As more filters are added, they can be listed here.  */
-    // function getVarValue(filterName, d) {
-    //     // Note: if filterName does not match variant prop, can add translation here
-    //     return d[filterName];
-    // }
-    //
-    // /* Returns true if selected variant passes filter and is visible. */
-    // var checkForSelectedVar = function(selectedVarId, svgContainer) {
-    //     let stillVisible = false;
-    //     svgContainer.selectAll('.filtered').each(function (d) {
-    //         if (d.id === selectedVarId) {
-    //             stillVisible = true;
-    //         }
-    //     });
-    //     return stillVisible;
-    // };
-
-    // var showCircle = function (d, svgContainer, indicateMissingVariant, pinned) {
-    //     // Find the matching variant
-    //     var matchingVariant = null;
-    //     // Only matching if visible
-    //     svgContainer.selectAll(".variant.filtered").each(function (variant) {
-    //         if (d.start === variant.start
-    //             && d.end === variant.end
-    //             && d.ref === variant.ref
-    //             && d.alt === variant.alt
-    //             && d.type.toLowerCase() === variant.type.toLowerCase()) {
-    //
-    //             if (variant.zygosity != null && variant.zygosity.toLowerCase() === 'homref') {
-    //                 // we want to show an "x" for homozygous reference variants
-    //                 // instead of a circle
-    //             } else {
-    //                 matchingVariant = variant;
-    //             }
-    //         }
-    //     });
-    //
-    //     // Get the x for this position
-    //     var mousex, mousey;
-    //     if (matchingVariant) {
-    //         mousex = x(matchingVariant.start);
-    //         mousey = height - ((matchingVariant.level + 1) * (variantHeight + verticalPadding));
-    //
-    //
-    //         var circleClazz = pinned ? '.pinned.circle' : '.hover.circle';
-    //         var circle = svgContainer.select(circleClazz);
-    //         circle.transition()
-    //             .duration(200)
-    //             .style("opacity", 1);
-    //         circle.attr("cx", mousex + margin.left + 2)
-    //             .attr("cy", mousey + margin.top + 4);
-    //
-    //
-    //         var matrix = circle.node()
-    //             .getScreenCTM()
-    //             .translate(+circle.node().getAttribute("cx"), +circle.node().getAttribute("cy"));
-    //         var boundRect = circle.node().getBoundingClientRect();
-    //
-    //         // Firefox doesn't consider the transform (slideout's shift left) with the getScreenCTM() method,
-    //         // so instead the app will use getBoundingClientRect() method instead which does take into consideration
-    //         // the transform.
-    //         matchingVariant.screenX = d3.format("d")(boundRect.left + (boundRect.width / 2));
-    //
-    //         // Since the body is vertically scrollable, we need to calculate the y by offsetting to a height of the
-    //         // scroll position in the container.
-    //         matchingVariant.screenY = d3.format("d")((window.pageYOffset + matrix.f + margin.top) - boundRect.height);
-    //
-    //         //showCoordinateFrame(matchingVariant.screenX);
-    //
-    //     } else if (indicateMissingVariant) {
-    //         mousex = d3.format("d")(x(d.start));
-    //         mousey = height - verticalPadding;
-    //
-    //
-    //         var arrowClazz = pinned ? 'g.pinned.arrow' : 'g.hover.arrow';
-    //         var garrow = svgContainer.select(arrowClazz);
-    //         garrow.attr("transform", "translate(" + (mousex + margin.left - variantHeight / 2) + "," + (mousey + margin.top - 6) + ")");
-    //         garrow.selectAll('.arrow').transition()
-    //             .duration(200)
-    //             .style("opacity", 1);
-    //     }
-    //     return matchingVariant;
-    // };
-
-
-    // var hideCircle = function (svgContainers, pinned) {
-    //     var circleClazz = pinned ? '.pinned.circle' : '.hover.circle';
-    //     var pinnedArrowClazz = 'g.pinned.arrow';
-    //     var hoverArrowClazz = 'g.hover.arrow';
-    //     svgContainers.selectAll(circleClazz).transition()
-    //         .duration(500)
-    //         .style("opacity", 0);
-    //     if (pinned) {
-    //         svgContainers.selectAll(pinnedArrowClazz).selectAll(".arrow").transition()
-    //             .duration(500)
-    //             .style("opacity", 0);
-    //     }
-    //     if (!pinned) {
-    //         svgContainers.selectAll(hoverArrowClazz).selectAll(".arrow").transition()
-    //             .duration(500)
-    //             .style("opacity", 0);
-    //     }
-    // };
-
-    /* Takes in a list of filter classes. If a variant contains any of them, it will be hidden.
-    *  Takes in a filter cutoff object that a variant must meet or be lower than - if not, it will be hidden. */
-    // var promiseFilterVariants = function (filterClasses, filterCutoffs, svgContainer) {
-    //     return new Promise((resolve) => {
-    //         let allVariants = svgContainer.selectAll(".variant");
-    //
-    //         // Add filtered class to all variants on DOM and model object
-    //         allVariants.classed({'filtered': true});
-    //         allVariants.each(function(d) {
-    //             d.passesFilters = true;
-    //         });
-    //
-    //         // If we're out of active filters, display all variants
-    //         if (filterClasses.length === 0 && filterCutoffs.length === 0) {
-    //             allVariants.style("opacity", 1);
-    //             allVariants.style("pointer-events", 'auto');
-    //             return false;
-    //         }
-    //
-    //         // Remove filtered class for any variants that contain the given class criteria
-    //         filterClasses.forEach((filterClass) => {
-    //             let nonPassingVars = svgContainer.selectAll(".variant" + filterClass);
-    //             nonPassingVars.classed('filtered', false);
-    //             nonPassingVars.style("pointer-events", 'none');
-    //             nonPassingVars.each(function(d) {
-    //                 d.passesFilters = false;
-    //             });
-    //         });
-    //
-    //         // Include previously filtered variants into the equation
-    //         let filteredVars = svgContainer.selectAll('.filtered');
-    //
-    //         // Remove filtered class for any variants that don't meet cutoffs
-    //         let cutoffs = Object.values(filterCutoffs);
-    //         if (cutoffs.length > 0) {
-    //             filteredVars.each(function (d) {
-    //                 if (d === 0) {
-    //                     return;
-    //                 }
-    //
-    //                 cutoffs.forEach((cutoff) => {
-    //                     let filterName = cutoff[0];
-    //                     let filterLogic = cutoff[1];
-    //                     let filterCutoffVal = parseFloat(cutoff[2]);
-    //                     let varVal = getVarValue(filterName, d);
-    //                     let passesFilter = true;
-    //
-    //                     switch (filterLogic) {
-    //                         case '<':
-    //                             if (!(varVal < filterCutoffVal)) {
-    //                                 passesFilter = false;
-    //                             }
-    //                             break;
-    //                         case '<=':
-    //                             if (!(varVal <= filterCutoffVal)) {
-    //                                 passesFilter = false;
-    //                             }
-    //                             break;
-    //                         case '=':
-    //                             if (!(varVal === filterCutoffVal)) {
-    //                                 passesFilter = false;
-    //                             }
-    //                             break;
-    //                         case '>=':
-    //                             if (!(varVal >= filterCutoffVal)) {
-    //                                 passesFilter = false;
-    //                             }
-    //                             break;
-    //                         case '>':
-    //                             if (!(varVal > filterCutoffVal)) {
-    //                                 passesFilter = false;
-    //                             }
-    //                             break;
-    //                         default:
-    //                         // Do nothing
-    //                     }
-    //                     // Mark in model if doesn't pass
-    //                     if (!passesFilter) {
-    //                         d.passesFilters = false;
-    //
-    //                         // Do actual hiding
-    //                         let selectionId = '#' + d.id;
-    //                         let domD = svgContainer.selectAll(selectionId);
-    //                         domD.classed({'filtered': false});
-    //                         domD.style('pointer-events', 'none');
-    //                     }
-    //                 })
-    //             });
-    //         }
-    //
-    //         // Re-check for all filtered variants
-    //         filteredVars = svgContainer.selectAll('.filtered');
-    //
-    //
-    //         // Hide all variants
-    //         allVariants.style("opacity", 0)
-    //             .style("pointer-events", "none")
-    //             .transition()
-    //             .duration(1000);
-    //
-    //         // Reveal variants that pass filter
-    //         filteredVars.style("opacity", 1)
-    //             .style("pointer-events", "auto");
-    //
-    //
-    //         // Return whether any variants are still visible
-    //         if (filteredVars && filteredVars[0]) {
-    //             resolve(filteredVars[0].length);
-    //         } else {
-    //             resolve(0);
-    //         }
-    //     });
-    // };
-
-    /* Updates styling classes applied to variants. Utilized in somatic filter application. */
-    // var updateVariantClasses = function(svgContainer) {
-    //     let allVariants = svgContainer.selectAll(".variant");
-    //
-    //     // REPLACE classes here (except filter status - this is guaranteed by classifyByImpact)
-    //     allVariants.attr('class', function (d) {
-    //         return chart.clazz()(d);
-    //     });
-    // };
 
     function chart() {
         // merge options and defaults
@@ -407,15 +163,6 @@ export default function variantD3(d3, vizId, theSelection) {
 
                 var symbolSize = symbolScale(minWidth);
 
-
-                // Brush
-                // var brush = d3.svg.brush()
-                //     .x(x)
-                //     .on("brushend", function () {
-                //         dispatch.d3brush(brush);
-                //     });
-
-
                 // Select the svg element, if it exists.
                 var svg = container.selectAll("svg").data([0]);
 
@@ -429,32 +176,24 @@ export default function variantD3(d3, vizId, theSelection) {
                     .attr("class", "group")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                // svg.on("click", function (d) {
-                //     dispatch.d3outsideclick(null);
-                // })
-
-                // var g = svg.select("g.group");
-
 
                 // The chart dimensions could change after instantiation, so update viewbox dimensions
                 // every time we draw the chart.
-                // d3.select(this).selectAll("svg")
-                //     .filter(function () {
-                //         return this.parentNode === container.node();
-                //     })
-                //     .attr('viewBox', "0 0 " + parseInt(width + margin.left + margin.right) + " " + parseInt(height + margin.top + margin.bottom));
-                //
-                //
-                // // Add grouping for flagged variants
-                // svg.select("g.flagged-variants").remove();
-                // svg.append("g")
-                //     .attr("class", "flagged-variants");
+                d3.select(this).selectAll("svg")
+                    .filter(function () {
+                        return this.parentNode === container.node();
+                    })
+                    .attr('viewBox', "0 0 " + parseInt(width + margin.left + margin.right) + " " + parseInt(height + margin.top + margin.bottom));
 
 
                 // Create the X-axis.
                 g.selectAll(".x.axis").remove();
                 if (showXAxis) {
-                    g.append("g").attr("class", "x axis").attr("transform", "translate(0," + (y.range()[0] + margin.bottom) + ")");
+                    g.append("g")
+                        .attr("class", "x axis")
+                        .style('font-size', '14px')
+                        .attr("transform", "translate(0," + (y.range()[0] + margin.bottom - margin.top) + ")")
+                        .call(xAxis);
                 }
 
                 // Create dividing line
@@ -476,15 +215,6 @@ export default function variantD3(d3, vizId, theSelection) {
 
                 }
 
-
-                // add tooltip div
-                // container.selectAll(".tooltip")
-                //     .data([0])
-                //     .enter().append('div')
-                //     .attr("class", "tooltip")
-                //     .style("opacity", 0);
-
-
                 // Start variant model
                 // add elements
                 var track = g.selectAll('.track.snp')
@@ -502,22 +232,6 @@ export default function variantD3(d3, vizId, theSelection) {
                     .attr('transform', function (d, i) {
                         return "translate(0," + y(i + 1) + ")"
                     });
-
-
-                // if (showBrush) {
-                //     if (brushHeight == null) {
-                //         brushHeight = variantHeight;
-                //         brushY = 0;
-                //     } else {
-                //         brushY = 0;
-                //     }
-                //     track.selectAll("g.x.brush").data([0]).enter().append("g")
-                //         .attr("class", "x brush")
-                //         .call(brush)
-                //         .selectAll("rect")
-                //         .attr("y", brushY)
-                //         .attr("height", brushHeight);
-                // }
 
 
                 track.selectAll('.variant').remove();
@@ -543,7 +257,6 @@ export default function variantD3(d3, vizId, theSelection) {
                         return Math.round(x(d.start) - (minWidth / 2) + (minWidth / 4));
                     })
                     .attr('width', function () {
-                        //            return showTransition ? 0 : Math.max(Math.round(x(d.end) - x(d.start)), minWidth);
                         return showTransition ? 0 : variantHeight;
                     })
                     .attr('y', function (d) {
@@ -555,9 +268,9 @@ export default function variantD3(d3, vizId, theSelection) {
                 // insertions and deletions
                 trackindel.selectAll('.variant').data(function (d) {
                     var indels = d['features'].filter(function (d) {
-                        return d.type.toUpperCase() == 'DEL'
-                            || d.type.toUpperCase() == 'INS'
-                            || d.type.toUpperCase() == 'COMPLEX';
+                        return d.type.toUpperCase() === 'DEL'
+                            || d.type.toUpperCase() === 'INS'
+                            || d.type.toUpperCase() === 'COMPLEX';
                     });
                     return indels;
                 }).join('path')
@@ -579,21 +292,6 @@ export default function variantD3(d3, vizId, theSelection) {
                         var tx = "translate(" + xCoord + "," + yCoord + ")";
                         return tx;
                     });
-
-
-                // TODO: what is bounding box here - only hovering on top border correctly
-                // g.selectAll('.variant')
-                //     .on("click", function (d) {
-                //         dispatch.d3click(d);
-                //         d3.event.stopPropagation();
-                //     })
-                //     .on("mouseover", function (d) {
-                //         dispatch.d3mouseover(d);
-                //     })
-                //     .on("mouseout", function (d) {
-                //         dispatch.d3mouseout();
-                //     });
-
 
                 // exit
                 track.exit().remove();
@@ -623,8 +321,6 @@ export default function variantD3(d3, vizId, theSelection) {
                             return d3.format('d')(x(d.start) - (minWidth / 2) + (minWidth / 4));
                         })
                         .attr('width', function () {
-                            // TODO:  Need to review!!
-                            //                return Math.max(Math.round(x(d.end) - x(d.start)), minWidth);
                             return variantHeight;
                         })
                         .attr('y', function (d) {
@@ -743,81 +439,10 @@ export default function variantD3(d3, vizId, theSelection) {
                             .style("opacity", 0);
                     }
                 });
-                // dispatch.d3rendered();
             }
         });
     }
-
     chart();
-
-    // chart.showFlaggedVariant = function (svg, variant, key) {
-    //
-    //     // Find the matching variant
-    //     var matchingVariant = null;
-    //     svg.selectAll(".variant").each(function (d) {
-    //         if (d.start == variant.start
-    //             && d.end == variant.end
-    //             && d.ref == variant.ref
-    //             && d.alt == variant.alt
-    //             && d.type.toLowerCase() == variant.type.toLowerCase()) {
-    //             matchingVariant = d;
-    //         }
-    //     });
-    //     if (!matchingVariant) {
-    //         return;
-    //     }
-    //
-    //
-    //     // Get the x, y for the variant's position
-    //     var mousex = d3.format("d")(x(matchingVariant.start));
-    //     var mousey = height - ((matchingVariant.level + 1) * (variantHeight + verticalPadding));
-    //
-    //     var xpos = 0;
-    //     var ypos = mousey - 2;
-    //     if (variant.type.toUpperCase() == "DEL" || variant.type.toUpperCase() == "COMPLEX") {
-    //         xpos = mousex;
-    //     } else if (variant.type.toUpperCase() == "INS") {
-    //         xpos = mousex - .5;
-    //     } else {
-    //         xpos = mousex + .5;
-    //     }
-    //
-    //     var group = svg.select("g.flagged-variants")
-    //         .append("g")
-    //         .attr("class", "flagged-variant")
-    //         .attr("id", key ? key : "")
-    //         .attr("transform", "translate(" + xpos + "," + ypos + ")");
-    //
-    //
-    //     var flagGroup = group.append("g")
-    //         .attr("transform", "translate(-5,-5)");
-    //     flagGroup.append("rect")
-    //         .attr("x", 1)
-    //         .attr("y", 0)
-    //         .attr("width", 20)
-    //         .attr("height", 20);
-    //
-    //     return chart;
-    //
-    // }
-
-
-    // chart.removeFlaggedVariant = function (svg, variant) {
-    //     // Find the matching variant
-    //     var matchingVariant = null;
-    //     svg.selectAll(".variant").each(function (d) {
-    //         if (d.start === variant.start
-    //             && d.end === variant.end
-    //             && d.ref === variant.ref
-    //             && d.alt === variant.alt
-    //             && d.type.toLowerCase() === variant.type.toLowerCase()) {
-    //             matchingVariant = d;
-    //         }
-    //     });
-    //     if (!matchingVariant) {
-    //         return;
-    //     }
-    // };
 
     function tickFormatter(d) {
         if ((d / 1000000) >= 1)
