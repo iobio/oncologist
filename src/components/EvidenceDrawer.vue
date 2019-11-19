@@ -2,7 +2,6 @@
     <div>
         <v-sheet
                 :height="screenHeight"
-                class="overflow-hidden"
                 style="position: relative;"
         >
             <!--Static main page-->
@@ -11,7 +10,10 @@
                     {{drug.toUpperCase()}}
                 </v-card-title>
                 <v-card-text>
-                    <DrugEvidence></DrugEvidence>
+                    <DrugEvidence
+                    :fileName="screenFile"
+                    :pdxIds="pdxIds">
+                    </DrugEvidence>
                     <GenEvidence
                             :screenHeight="screenHeight"
                             :screenWidth="screenWidth"
@@ -24,7 +26,7 @@
             <!--Dynamic drawer-->
             <v-navigation-drawer
                     v-model="displayGeneDrawer"
-                    absolute
+                    app
                     temporary
                     right
                     :width="overlayWidth"
@@ -65,6 +67,14 @@
             screenHeight: {
                 type: Number,
                 default: 500
+            },
+            screenFile: {
+                type: String,
+                default: ''
+            },
+            pdxIds: {
+                type: Array,
+                default: null
             }
         },
         data:() => {

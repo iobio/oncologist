@@ -37,13 +37,13 @@
         data: () => {
             return {
                 timelineItems: [
-                    { index: 0, title: 'Initial Diagnosis', date: '10/05/2017', notes: 'Diagnosed at HCI by Dr. Joe Smith'},
-                    { index: 1, title: 'Surgery', date: '11/05/2017', notes: 'Double mastectomy performed at HCI'},
-                    { index: 2, title: 'Treatment I', date: '11/30/2017', notes: 'Paclitaxel administered at HCI'},
-                    { index: 3, title: 'Treatment II', date: '12/30/2018', notes: 'Paclitaxel administered at HCI'},
-                    { index: 4, title: 'Treatment III', date: '01/28/2018', notes: 'Paclitaxel administered at HCI'},
-                    { index: 5, title: 'Screening', date: '03/05/2018', notes: 'No detectable signs of cancer'},
-                    { index: 6, title: 'Relapse', date: '09/05/2018', notes: 'Cancer detected in left lymph node'}
+                    { index: 0, title: 'Initial Diagnosis', date: 'Day 0', notes: 'Diagnosed at HCI by Dr. Joe Smith'},
+                    { index: 1, title: 'Surgery', date: 'Day 32', notes: 'Double mastectomy performed at HCI'},
+                    { index: 2, title: 'Treatment I', date: 'Day 45', notes: 'Paclitaxel administered at HCI'},
+                    { index: 3, title: 'Treatment II', date: 'Day 75', notes: 'Paclitaxel administered at HCI'},
+                    { index: 4, title: 'Treatment III', date: 'Day 105', notes: 'Paclitaxel administered at HCI'},
+                    { index: 5, title: 'Screening', date: 'Day 105', notes: 'No detectable signs of cancer'},
+                    { index: 6, title: 'Relapse', date: 'Day 224', notes: 'Cancer detected in left lymph node'}
                 ]
             }
         },

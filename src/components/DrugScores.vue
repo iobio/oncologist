@@ -33,7 +33,13 @@
         methods: {
             drawHeatmap: function() {
                 const self = this;
-                self.heatmap = new drugHeatmap(d3, self.divId, self.drugList, self.fileName)
+                const evidenceTypes = ["Drug Screen Evidence", "Genomic Evidence", "Expression Evidence"];
+                const largeBlockSize = 8;
+                const cardWidth = 800;
+                const cardHeight = 450;
+                const colors = ['#b2182b','#ef8a62','#fddbc7','#f7f7f7','#d1e5f0','#67a9cf','#2166ac'];
+                const colShift = false;
+                self.heatmap = new drugHeatmap(d3, self.divId, self.drugList, evidenceTypes, self.fileName, largeBlockSize, cardHeight, cardWidth, colors, colShift)
                     .on('drugClick', function(drug) { self.$emit('drugClick', drug); })
             }
         },

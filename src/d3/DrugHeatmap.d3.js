@@ -1,15 +1,15 @@
 /* SJG Nov2019 adapted from http://bl.ocks.org/tjdecke/5558084 */
 
-export default function drugHeatmap(d3, vizId, drugs, scoreDataFileName) {
-    var margin = {top: 50, right: 150, bottom: 100, left: 150},
-        width = 800 - margin.left - margin.right + 300, // hardcoded adding margin back in to scale correctly
-        height = 450 - margin.top - margin.bottom,
-        gridSize = Math.floor(width / 8),
+export default function drugHeatmap(d3, vizId, xAxisLabels, yAxisLabels, fileName, scaleFactor, cardHeight, cardWidth, colors, shiftCols) {
+    // TODO: take in margin param instead of relying on shiftCols
+    var margin = {top: (shiftCols ? 75: 50), right: 150, bottom: 100, left: (shiftCols ? 75 : 150)},
+        width = cardWidth - margin.left - margin.right + 300, // hardcoded adding margin back in to scale correctly
+        height = cardHeight - margin.top - margin.bottom,
+        gridSize = Math.floor(width / scaleFactor),
         gridSpacing = 5,
         legendElementWidth = gridSize * 2,
-        buckets = 7,
-        evidenceTypes = ["Drug Screen Evidence", "Genomic Evidence", "Expression Evidence"],
-        colors = ['#b2182b','#ef8a62','#fddbc7','#f7f7f7','#d1e5f0','#67a9cf','#2166ac'];
+        // TODO: make width adjustable via argument
+        buckets = colors.length;
 
     var dispatch = d3.dispatch("drugClick", "sort");
 
@@ -17,10 +17,12 @@ export default function drugHeatmap(d3, vizId, drugs, scoreDataFileName) {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
+        .attr("class", "gViz")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    // TODO: rename labels to more generic
     svg.selectAll(".drugLabel")
-        .data(evidenceTypes)
+        .data(yAxisLabels)
         .enter().append("text")
         .text(function (d) {
             return d;
@@ -38,24 +40,29 @@ export default function drugHeatmap(d3, vizId, drugs, scoreDataFileName) {
         });
 
     svg.selectAll(".timeLabel")
-        .data(drugs)
+        .data(xAxisLabels)
         .enter().append("text")
         .text(function (d) {
             return d;
         })
         .style("font-family", "Raleway")
         .style("color", "#888")
-        .attr("x", function (d, i) {
-            return i * gridSize;
-        })
+        .attr("x", -6)
         .attr("y", 0)
-        .style("text-anchor", "middle")
-        .attr("transform", "translate(" + gridSize / 2 + ", -6)")
+        .style("text-anchor", function() { return shiftCols ? "start" : "middle"})
+        .attr("transform", function (d, i) {
+            if (shiftCols) {
+                return "translate(" + (i * gridSize + gridSize / 2) + ", -10)rotate(-65)";
+            } else {
+                return "translate(" + (i * gridSize + gridSize / 2) + ", -6)";
+            }
+        })
         .attr("class", function (d, i) {
             return ((i >= 7 && i <= 16) ? "evidLabel mono axis axis-evid" : "evidLabel mono axis");
         });
 
     var heatmapChart = function (fileName) {
+        // TODO: rename mapping to be more generic
         d3.tsv(fileName)
             .then(function (fileData) {
                 var formattedData = fileData.map(function (d) {
@@ -89,7 +96,7 @@ export default function drugHeatmap(d3, vizId, drugs, scoreDataFileName) {
                         return colorScale(d.value);
                     })
                     .on("click", function(d) {
-                        dispatch.call("drugClick", this, drugs[d.drug - 1] );
+                        dispatch.call("drugClick", this, xAxisLabels[d.drug - 1] );
                     });
 
                 cards.select("title").text(function (d) {
@@ -132,7 +139,7 @@ export default function drugHeatmap(d3, vizId, drugs, scoreDataFileName) {
 
         return svg.node();
     };
-    heatmapChart(scoreDataFileName);
+    heatmapChart(fileName);
 
     // New rebind paradigm
     heatmapChart.on = function() {

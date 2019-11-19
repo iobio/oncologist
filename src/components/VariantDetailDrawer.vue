@@ -1,5 +1,5 @@
 <template>
-    <v-card class="detail-card" style="overflow-y: scroll; padding-bottom: 50px">
+    <v-card class="detail-card">
         <v-card-title style="padding-left: 20px; padding-top: 20px">
             <span class="card-title">{{drug.toUpperCase() + ':'}}</span>
             <span class="sub-title">{{variant ? variant.gene : ''}}</span>

@@ -19,10 +19,10 @@
                     </v-layout>
                     <v-layout class="pt-hx-row">
                         <v-flex xs2>
-                            <span class="pt-hx-label">Date of Birth:</span>
+                            <span class="pt-hx-label">Sex:</span>
                         </v-flex>
                         <v-flex xs4>
-                            <span class="pt-hx-value">xx/xx/1955</span>
+                            <span class="pt-hx-value">Female</span>
                         </v-flex>
                         <v-flex xs2>
                             <span class="pt-hx-label">Sub-Type:</span>
@@ -32,11 +32,8 @@
                         </v-flex>
                     </v-layout>
                     <v-layout class="pt-hx-row">
-                        <v-flex xs2>
-                            <span class="pt-hx-label">Sex:</span>
-                        </v-flex>
-                        <v-flex xs4>
-                            <span class="pt-hx-value">Female</span>
+                        <v-flex xs6>
+                            <!--Spacing-->
                         </v-flex>
                         <v-flex xs2>
                             <span class="pt-hx-label">Primary Location:</span>
