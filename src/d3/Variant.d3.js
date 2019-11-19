@@ -60,7 +60,6 @@ export default function variantD3(d3, vizId, theSelection) {
         }
         var dividerY = dividerLevel ? height - ((dividerLevel + 1) * (variantHeight + verticalPadding)) : null;
 
-
         // determine inner height (w/o margins)
         var innerHeight = height - margin.top - margin.bottom;
 
@@ -312,7 +311,7 @@ export default function variantD3(d3, vizId, theSelection) {
                         return parseInt(a.start) - parseInt(b.start)
                     })
                         .transition()
-                        .duration(1000)
+                        .duration(1200)
                         .delay(function (d, i) {
                             return i * interval;
                         })

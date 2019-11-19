@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card class="mb-1">
         <v-card-title class="card-title">
             Genomic Vulnerabilities
         </v-card-title>

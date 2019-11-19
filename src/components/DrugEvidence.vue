@@ -1,5 +1,5 @@
 <template>
-    <v-card style="padding-bottom: 5px">
+    <v-card class="mb-1" style="padding-bottom: 5px">
         <v-card-title class="card-title">
             Drug Screening
         </v-card-title>
