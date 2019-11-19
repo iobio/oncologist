@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mb-1" style="padding-bottom: 5px">
+    <v-card class="mb-1" style="padding-bottom: 5px;">
         <v-card-title class="card-title">
             Drug Screening
         </v-card-title>
@@ -35,8 +35,8 @@
                 const self = this;
                 const concentrations = ['50', '10', '2', '0.4', '0.08', '0.016', '0.0032', '0.00016', '0'];
                 const smallBlockSize = 16;
-                const cardWidth = 800;
-                const cardHeight = 550;
+                const cardWidth = 750;  // TODO: make this scale accordingly
+                const cardHeight = 600;
                 const colors = ['#b2182b','#d6604d','#f4a582','#fddbc7','#f7f7f7','#d1e5f0','#92c5de','#4393c3','#2166ac'];
                 const colShift = true;
                 self.heatmap = new drugHeatmap(d3, self.divId, self.pdxIds, concentrations, self.fileName, smallBlockSize, cardHeight, cardWidth, colors, colShift);

@@ -7,7 +7,7 @@ export default function drugHeatmap(d3, vizId, xAxisLabels, yAxisLabels, fileNam
         height = cardHeight - margin.top - margin.bottom,
         gridSize = Math.floor(width / scaleFactor),
         gridSpacing = 5,
-        legendElementWidth = gridSize * 2,
+        // legendElementWidth = gridSize * 2,
         // TODO: make width adjustable via argument
         buckets = colors.length;
 
@@ -110,29 +110,30 @@ export default function drugHeatmap(d3, vizId, xAxisLabels, yAxisLabels, fileNam
                         return d;
                     });
 
-                legend.enter().append("g")
-                    .attr("class", "legend");
+                // TODO: get rid of this 300 or name it above
+                var adjWidth = shiftCols ? width : width - 150;
+                var sectionWidth = adjWidth / colorScale.quantiles().length;
 
-                legend.append("rect")
+                legend.enter().append("rect")
                     .attr("x", function (d, i) {
-                        return legendElementWidth * i;
+                        return sectionWidth * i;
                     })
-                    .attr("y", height)
-                    .attr("width", legendElementWidth)
+                    .attr("y", height + margin.top)
+                    .attr("width", sectionWidth)
                     .attr("height", gridSize / 2)
                     .style("fill", function (d, i) {
                         return colors[i];
                     });
 
-                legend.append("text")
-                    .attr("class", "mono")
-                    .text(function (d) {
-                        return "≥ " + Math.round(d);
-                    })
-                    .attr("x", function (d, i) {
-                        return legendElementWidth * i;
-                    })
-                    .attr("y", height + gridSize);
+                // legend.append("text")
+                //     .attr("class", "mono")
+                //     .text(function (d) {
+                //         return "≥ " + Math.round(d);
+                //     })
+                //     .attr("x", function (d, i) {
+                //         return legendElementWidth * i;
+                //     })
+                //     .attr("y", height + gridSize);
 
                 legend.exit().remove();
             });
