@@ -4,7 +4,7 @@
             DRUG SCORES
         </v-card-title>
         <v-card-text>
-            <div :id="divId"></div>
+            <div :id="divId" style="padding-left: 20px"></div>
         </v-card-text>
     </v-card>
 </template>
@@ -33,13 +33,13 @@
         methods: {
             drawHeatmap: function() {
                 const self = this;
-                const evidenceTypes = ["Drug Screen Evidence", "Genomic Evidence", "Expression Evidence"];
+                const evidenceTypes = ["Drug Screen", "Genomic", "Expression"];
                 const largeBlockSize = 8;
-                const cardWidth = 750;
-                const cardHeight = 450;
+                const cardWidth = 850;
+                const cardHeight = 550;
                 const colors = ['#b2182b','#ef8a62','#fddbc7','#f7f7f7','#d1e5f0','#67a9cf','#2166ac'];
                 const colShift = false;
-                self.heatmap = new drugHeatmap(d3, self.divId, self.drugList, evidenceTypes, self.fileName, largeBlockSize, cardHeight, cardWidth, colors, colShift)
+                self.heatmap = new drugHeatmap(d3, self.divId, self.drugList, 'Drug', evidenceTypes, 'Evidence Type', self.fileName, largeBlockSize, cardHeight, cardWidth, colors, colShift, 'Weak Evidence', 'Strong Evidence')
                     .on('drugClick', function(drug) { self.$emit('drugClick', drug); })
             }
         },

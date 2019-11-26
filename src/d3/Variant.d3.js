@@ -1,15 +1,16 @@
 export default function variantD3(d3, vizId, theSelection) {
 
     // dimensions
-    var margin = {top: 10, right: 0, bottom: 10, left: 110},
+    var margin = {top: 10, right: 0, bottom: 20, left: 110},
         width = 1000,
-        height = 200;
+        height = 400;
     // scales
     var x = d3.scaleLinear(),
         y = d3.scaleLinear();
     // axis
     var xAxis = d3.axisBottom(x)
         .tickFormat(tickFormatter);
+
     // variables
     var borderRadius = 1,
         variantHeight = 12,
@@ -20,7 +21,7 @@ export default function variantD3(d3, vizId, theSelection) {
         heightPercent = "100%",
         widthPercent = "100%",
         verticalLayers = 1,
-        verticalPadding = 6,
+        verticalPadding = 3,
         showTransition = true,
         lowestWidth = 3,
         dividerLevel = false,
@@ -30,11 +31,11 @@ export default function variantD3(d3, vizId, theSelection) {
 
     function getSymbol(d) {
         if (d.type.toUpperCase() === 'DEL') {
-            return 'triangle-up';
+            return d3.symbolTriangle;
         } else if (d.type.toUpperCase() === 'INS') {
-            return 'circle';
+            return d3.symbolCircle;
         } else if (d.type.toUpperCase() === 'COMPLEX') {
-            return 'diamond';
+            return d3.symbolDiamond;
         }
     }
 
@@ -110,11 +111,11 @@ export default function variantD3(d3, vizId, theSelection) {
                         // For each variant.  Calculate the distance on the screen
                         // between the 2 variants.
                         for (var i = 0; i < d.features.length - 1; i++) {
-                            if (d.features[i].level == l) {
+                            if (d.features[i].level === l) {
                                 // find the next feature at the same level
                                 var nextPos = null;
                                 for (var next = i + 1; next < d.features.length; next++) {
-                                    if (d.features[next].level == l) {
+                                    if (d.features[next].level === l) {
                                         nextPos = next;
                                         break;
                                     }
@@ -273,11 +274,10 @@ export default function variantD3(d3, vizId, theSelection) {
                     });
                     return indels;
                 }).join('path')
-                    .attr("d", function (d, i) {
-                        return d3.svg
-                            .symbol()
-                            .type(getSymbol(d, i))
-                            .size(symbolSize)();
+                    .attr("d", function (d) {
+                        return d3.symbol()
+                            .size(symbolSize)
+                            .type(getSymbol(d))();
                     })
                     .attr('class', function (d) {
                         return classifyByImpact(d);
@@ -336,11 +336,10 @@ export default function variantD3(d3, vizId, theSelection) {
                             return i * interval;
                         })
                         .ease(d3.easeBounce)
-                        .attr("d", function (d, i) {
-                            return d3.svg
-                                .symbol()
-                                .type(getSymbol(d, i))
-                                .size(symbolSize)();
+                        .attr("d", function (d) {
+                            return d3.symbol()
+                                .size(symbolSize)
+                                .type(getSymbol(d))();
                         })
                         .attr("transform", function (d) {
                             var xCoord = x(d.start) + 2;
@@ -356,10 +355,9 @@ export default function variantD3(d3, vizId, theSelection) {
                             return i * interval;
                         })
                         .ease(d3.easeBounce)
-                        .attr("d", function (d, i) {
-                            return d3.svg
-                                .symbol()
-                                .type(getSymbol(d, i))
+                        .attr("d", function (d) {
+                            return d3.symbol()
+                                .type(getSymbol(d))
                                 .size(symbolSizeCircle)();
                         })
                         .attr("transform", function (d) {
@@ -375,10 +373,9 @@ export default function variantD3(d3, vizId, theSelection) {
                         .delay(function (d, i) {
                             return i * interval;
                         })
-                        .attr("d", function (d, i) {
-                            return d3.svg
-                                .symbol()
-                                .type(getSymbol(d, i))
+                        .attr("d", function (d) {
+                            return d3.symbol()
+                                .type(getSymbol(d))
                                 .size(symbolSize)();
                         })
                         .attr("transform", function (d) {

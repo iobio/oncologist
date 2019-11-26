@@ -7,7 +7,7 @@
         >
             <!--Static main page-->
             <v-layout>
-                <v-flex xs8>
+                <v-flex xs7 md8>
                     <PatientMetaData/>
                     <DrugScores style="overflow-x: scroll"
                             :fileName="SCORE_FILE"
@@ -15,7 +15,7 @@
                             @drugClick="onDrugClick">
                     </DrugScores>
                 </v-flex>
-                <v-flex xs4>
+                <v-flex xs5 md4>
                     <PatientTimeline/>
                 </v-flex>
             </v-layout>
@@ -58,7 +58,7 @@
             return {
                 SCORE_FILE: 'http://localhost:8000/tow19example.tsv',
                 SCREEN_FILE: 'http://localhost:8000/drugScreenExample.tsv',
-                DRUGS: ['Everolimus', 'Bevacizumab', 'Trastuzumab', 'Palbociclib', 'Ribociclib', 'Olaparib', 'Neratinib', 'Pertuzumab'],
+                DRUGS: ['Eribulin', 'Bevacizumab', 'Trastuzumab', 'Palbociclib', 'Ribociclib', 'Olaparib', 'Neratinib', 'Pertuzumab'],
                 PDX_IDS: ['BCM5471', 'BCM4888', 'HCI-032', 'HCI-005', 'TOW19', 'HCI-019', 'HCI-003', 'HCI-012', 'HCI-016', 'HCI-001', 'TOW26', 'HCI-017', 'HCI-023', 'HCI-027', 'HCI-002', 'HCI-025', 'HCI-010', 'HCI-011', 'HCI-015'],
                 displayEvidenceDrawer: false,
                 screenWidth: window.innerWidth,

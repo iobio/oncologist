@@ -1,14 +1,12 @@
 /* SJG Nov2019 adapted from http://bl.ocks.org/tjdecke/5558084 */
 
-export default function drugHeatmap(d3, vizId, xAxisLabels, yAxisLabels, fileName, scaleFactor, cardHeight, cardWidth, colors, shiftCols) {
+export default function drugHeatmap(d3, vizId, xAxisLabels, xAxisName, yAxisLabels, yAxisName,fileName, scaleFactor, cardHeight, cardWidth, colors, shiftCols, leftLegendLabel, rightLegendLabel) {
     // TODO: take in margin param instead of relying on shiftCols
-    var margin = {top: (shiftCols ? 75: 50), right: 150, bottom: 100, left: (shiftCols ? 75 : 150)},
+    var margin = {top: (shiftCols ? 100: 75), right: 150, bottom: 100, left: (shiftCols ? 75 : 125)},
         width = cardWidth - margin.left - margin.right + 300, // hardcoded adding margin back in to scale correctly
         height = cardHeight - margin.top - margin.bottom,
         gridSize = Math.floor(width / scaleFactor),
         gridSpacing = 5,
-        // legendElementWidth = gridSize * 2,
-        // TODO: make width adjustable via argument
         buckets = colors.length;
 
     var dispatch = d3.dispatch("drugClick", "sort");
@@ -29,7 +27,7 @@ export default function drugHeatmap(d3, vizId, xAxisLabels, yAxisLabels, fileNam
         })
         .attr("x", 0)
         .attr("y", function (d, i) {
-            return i * gridSize;
+            return i * gridSize - 5;
         })
         .style("text-anchor", "end")
         .style("font-family", "Raleway")
@@ -38,6 +36,16 @@ export default function drugHeatmap(d3, vizId, xAxisLabels, yAxisLabels, fileNam
         .attr("class", function (d, i) {
             return ((i >= 0 && i <= 4) ? "drugLabel mono axis axis-drugs" : "drugLabel mono axis");
         });
+
+    // text label for the x axis
+    svg.append("text")
+        .style("font-family", "Raleway")
+        .style("color", "#888")
+        .style("font-weight", 'bold')
+        .attr("transform",
+            "translate(" + (width/2) + " , " + (shiftCols ? -70 : -40) + ")")
+        .style("text-anchor", "middle")
+        .text(xAxisName);
 
     svg.selectAll(".timeLabel")
         .data(xAxisLabels)
@@ -60,6 +68,18 @@ export default function drugHeatmap(d3, vizId, xAxisLabels, yAxisLabels, fileNam
         .attr("class", function (d, i) {
             return ((i >= 7 && i <= 16) ? "evidLabel mono axis axis-evid" : "evidLabel mono axis");
         });
+
+    // text label for the y axis
+    svg.append("text")
+        .style("font-family", "Raleway")
+        .style("color", "#888")
+        .style("font-weight", 'bold')
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text(yAxisName);
 
     var heatmapChart = function (fileName) {
         // TODO: rename mapping to be more generic
@@ -112,28 +132,50 @@ export default function drugHeatmap(d3, vizId, xAxisLabels, yAxisLabels, fileNam
 
                 // TODO: get rid of this 300 or name it above
                 var adjWidth = shiftCols ? width : width - 150;
-                var sectionWidth = adjWidth / colorScale.quantiles().length;
+                var numQuantiles = colorScale.quantiles().length;
+                var sectionWidth = adjWidth / numQuantiles;
 
                 legend.enter().append("rect")
                     .attr("x", function (d, i) {
                         return sectionWidth * i;
                     })
-                    .attr("y", height + margin.top)
+                    .attr("y", height + (shiftCols ? gridSize : 0))
                     .attr("width", sectionWidth)
-                    .attr("height", gridSize / 2)
+                    .attr("height", 25)
                     .style("fill", function (d, i) {
                         return colors[i];
                     });
 
-                // legend.append("text")
-                //     .attr("class", "mono")
-                //     .text(function (d) {
-                //         return "≥ " + Math.round(d);
-                //     })
-                //     .attr("x", function (d, i) {
-                //         return legendElementWidth * i;
-                //     })
-                //     .attr("y", height + gridSize);
+                svg.append("text")
+                    .text(leftLegendLabel)
+                    .style("font-family", "Raleway")
+                    .style("font-size", "14px")
+                    .style("color", "#888")
+                    .attr("x", 0)
+                    .attr("dx", function() { return shiftCols ? sectionWidth / 5 : 0 })
+                    .attr("y", height + (shiftCols ? gridSize : 0) - 5);
+
+                if (shiftCols) {
+                    svg.append("text")
+                        .text('Cytostatic')
+                        .style("font-family", "Raleway")
+                        .style("font-size", "14px")
+                        .style("color", "#888")
+                        .attr("x", sectionWidth * (Math.floor(numQuantiles / 2)))
+                        .attr("dx", function() { return shiftCols ? sectionWidth / 5 : 0 })
+                        .attr("y", height + (shiftCols ? gridSize : 0) - 5)
+                        .style("text-anchor", "start");
+                }
+
+                svg.append("text")
+                    .text(rightLegendLabel)
+                    .style("font-family", "Raleway")
+                    .style("font-size", "14px")
+                    .style("color", "#888")
+                    .attr("x", sectionWidth * (numQuantiles + 1))
+                    .attr("dx", function() { return shiftCols ? - sectionWidth / 5 : 0 })
+                    .attr("y", height + (shiftCols ? gridSize : 0) - 5)
+                    .style("text-anchor", "end");
 
                 legend.exit().remove();
             });

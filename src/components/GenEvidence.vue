@@ -13,7 +13,7 @@
                         v-on:click="$emit('show-gene-details', v)"
                 >
                     <v-row>
-                        <i class="material-icons" style="font-size: 96px; color: #b2182b">gps_fixed</i>
+                        <i class="material-icons" style="font-size: 96px; color: #b2182b">{{getSymbol(v.type)}}</i>
                     </v-row>
                     <v-row justify="center">
                         <span class="gene-label">{{v.gene}}</span>
@@ -45,18 +45,28 @@
         },
         data: () => {
             return {
+                // NOTE: these are GRCh37 coords
                 variants: [
-                    { gene: 'VHL', type: '3\'SNP', chrom: '3', start: 10141008, end: 10153670,
-                        ref: 'C', alt: 'G', typeColor: '#daa520', isSubclonal: false,
-                        features: [ {start: 10150429, end: 10150430, level: 1, type: 'SNP', impact: 'MODERATE' } ] },
-                    { gene: 'MITD1', type: 'FS', chrom: '2', start: 99174427, end: 99174429,
+                    { gene: 'MITD1', type: 'FS', chrom: '2', start: 99776890, end: 99798521,
                         ref: 'ATG', alt: 'AG', typeColor: 'red', isSubclonal: true,
-                        features: [ {start: 0, end: 0, level: 1} ] }
+                        features: [ {start: 99785726, end: 99785727, level: 1, type: 'DEL', impact: 'HIGH' } ] },
+                    { gene: 'CCNE1', type: 'AMP', chrom: '19', start: 30302805, end: 30315215,
+                        ref: 'C', alt: 'G', typeColor: 'red', isSubclonal: false,
+                        features: [ {start: 30315000, end: 30315100, level: 1, type: 'COMPLEX', impact: 'HIGH' } ] },
                 ]
             }
         },
         computed: {},
-        methods: {}
+        methods: {
+            getSymbol: function(variantType) {
+                // TODO: add more symbols here
+                if (variantType === 'AMP') {
+                    return 'trending_up';
+                } else {
+                    return 'gps_fixed';
+                }
+            }
+        }
     }
 </script>
 <style scoped lang="sass">

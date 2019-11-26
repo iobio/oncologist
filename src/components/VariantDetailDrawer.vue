@@ -38,16 +38,19 @@
                 <v-card-title>
                     <v-container fluid style="padding-top: 0">
                         <v-row>
-                            <v-col class="d-flex sub-card-title" sm="5" style="padding-left:0; padding-top: 0">
+                            <v-col class="d-flex sub-card-title" lg="4" xl="5" style="padding-left:0; padding-top: 0">
                                 Variant Details
                             </v-col>
-                            <v-col class="d-flex" style="margin-top: 5px; padding-top: 0" sm="5">
+                            <v-col class="d-flex" style="margin-top: 5px; padding-top: 0" lg="5">
                                 {{variantLocation}}
                             </v-col>
-                            <v-col class="d-flex" style="margin-top: 5px; font-size: 18px; padding-top: 0" sm="2">
-                                <a href="http://oncogene.iobio.io" target="_blank">Launch Oncogene<i
-                                        class="material-icons"
-                                        style="font-size: 14px; padding-left: 2px;">open_in_new</i></a>
+                            <v-col class="d-flex" style="margin-top: 5px; font-size: 18px; padding-top: 0" lg="3" xl="2">
+                                <a href="http://oncogene.iobio.io" target="_blank">Launch Oncogene
+                                    <i class="material-icons"
+                                        style="font-size: 14px; padding-left: 2px;">
+                                        open_in_new
+                                    </i>
+                                </a>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -161,7 +164,7 @@
 <script>
     import d3 from '@/assets/d3';
     import variantViz from '../d3/Variant.d3.js'
-    import geneViz from '../d3/Gene.d3.js'
+    // import geneViz from '../d3/Gene.d3.js'
 
     export default {
         name: "VariantDetailDrawer",
@@ -173,6 +176,10 @@
             drug: {
                 type: String,
                 default: ''
+            },
+            transcript: {
+                type: Object,
+                default: null
             }
         },
         data: () => {
@@ -234,7 +241,17 @@
                         '1 Deficiency. Gene Ontology (GO) annotations related to this gene include ' +
                         'protein homodimerization activity and phosphatidylinositol binding.'
                     };
+                } else if (this.variant.gene === 'CCNE1') {
+                    return {
+                        title: 'Cyclin E1',
+                        body: 'CCNE1 (Cyclin E1) is a Protein Coding gene. Diseases associated with CCNE1 ' +
+                        'include Chronic Endophthalmitis and Facial Dermatosis. Among its related pathways' +
+                        ' are Cellular Senescence (REACTOME) and TP53 Regulates Transcription of Cell' +
+                        ' Cycle Genes. Gene Ontology (GO) annotations related to this gene include protein' +
+                        ' kinase binding and kinase activity. An important paralog of this gene is CCNE2.'
+                    };
                 } else {
+
                     return 'Could not retrieve gene summary.';
                 }
             },
@@ -249,14 +266,25 @@
         },
         methods: {
             drawViz: function () {
-
                 // Draw variant viz
                 let selection = d3.select('#' + this.varVizId).datum([this.variant]);
-                this.variantTrack = new variantViz(d3, this.varVizId, selection);
+                let geneRegionStart = 0;
+                let geneRegionEnd = 0;
+                if (this.variant) {
+                    geneRegionStart = this.variant.start;
+                    geneRegionEnd = this.variant.end;
+                }
+                this.variantTrack = new variantViz(d3, this.varVizId, selection, geneRegionStart, geneRegionEnd);
 
                 // Draw gene viz
-                selection = d3.select('#' + this.geneVizId).datum([this.gene]);
-                this.geneTrack = new geneViz(d3, this.geneVizId, selection);
+                // selection = d3.select('#' + this.geneVizId).datum([this.transcript]);
+                // let geneRegionStart = 0;
+                // let geneRegionEnd = 0;
+                // if (this.variant) {
+                //     geneRegionStart = this.variant.start;
+                //     geneRegionEnd = this.variant.end;
+                // }
+                // this.geneTrack = new geneViz(d3, this.varVizId, selection, geneRegionStart, geneRegionEnd);
             },
             getLink: function(pmid) {
                 return 'https://www.ncbi.nlm.nih.gov/pubmed/?term=' + pmid;
